@@ -1,0 +1,112 @@
+﻿
+
+@model SoftHub.Models.Software
+
+@if (Model != null)
+{
+    <h2>@Model.Name</h2>
+
+    <img src="@(string.IsNullOrEmpty(Model.ImagePath) ? "/images/no-image.png" : Model.ImagePath)" width="300" />
+
+    <p>
+        @(string.IsNullOrEmpty(Model.Description) 
+            ? "لا يوجد وصف" 
+            : Model.Description)
+    </p>
+
+    @if (!string.IsNullOrEmpty(Model.FilePath))
+    {
+        <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-success">
+            تحميل
+        </a>
+    }
+    else 
+    {
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-warning">
+            سجل دخول للتحميل 🔒
+        </a>
+    }
+    @* else
+    {
+        <p>لا يوجد ملف</p>
+    } *@
+}
+else
+{
+    <p>البرنامج غير موجود</p>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model SoftHub.Models.Software
+
+<h2>@Model.Name</h2>
+
+<div style="margin-top:20px;">
+
+    <!-- 🖼 الصورة -->
+    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    {
+        <img src="@Model.ImagePath" alt="@Model.Name" style="width:300px;height:auto;" />
+    }
+    else
+    {
+        <p>لا توجد صورة</p>
+    }
+
+    <!-- 📄 الوصف -->
+    <p>
+        @(string.IsNullOrEmpty(Model.Description)
+            ? "لا يوجد وصف لهذا البرنامج"
+            : Model.Description)
+    </p>
+
+    <!-- 📥 زر التحميل -->
+    <div style="margin-top:20px;">
+        @if (!string.IsNullOrEmpty(Model.FilePath))
+        {
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-success">
+                    تحميل 🎮
+                </a>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-warning">
+                    سجل دخول للتحميل 🔒
+                </a>
+            }
+        }
+        else
+        {
+            <p>لا يوجد ملف للتحميل</p>
+        }
+    </div>
+
+    <!-- 🔙 رجوع -->
+    <div style="margin-top:20px;">
+        <a asp-action="Index" class="btn btn-secondary">
+            الرجوع للقائمة
+        </a>
+    </div>
+
+</div> *@

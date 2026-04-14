@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SoftHub.Models.Software>
+
+<h2 style="margin-bottom:30px;">🔥 متجر البرامج</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create" class="btn btn-primary" style="margin-bottom:20px;">
+        ➕ إضافة برنامج
+    </a>
+}
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
+
+    @foreach (var item in Model)
+    {
+        <div style="background:#1f1f1f;border-radius:15px;padding:15px;transition:0.3s;">
+
+            <img src="@item.ImagePath" style="width:100%;height:150px;object-fit:cover;border-radius:10px;" />
+
+            <h4 style="margin-top:10px;">@item.Name</h4>
+
+            <p style="font-size:14px;color:#bbb;">
+                @(
+      !string.IsNullOrEmpty(item.Description)
+      ? (item.Description.Length > 80
+          ? item.Description.Substring(0, 80) + "..."
+          : item.Description)
+      : "لا يوجد وصف"
+  )
+            </p>
+
+            <div style="margin-top:10px;display:flex;justify-content:space-between;">
+
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">
+                    عرض
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>

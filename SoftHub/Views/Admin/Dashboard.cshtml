@@ -1,0 +1,175 @@
+﻿<h2 style="color:#c77dff;">📊 Dashboard</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+
+    <div class="card">👨‍💻 @ViewBag.Users</div>
+    <div class="card">📦 @ViewBag.Softwares</div>
+    <div class="card">⬇️ @ViewBag.Downloads</div>
+    <div class="card">👀 @ViewBag.Visits</div>
+
+</div>
+
+<canvas id="visitsChart" style="margin-top:40px;"></canvas>
+
+<script>
+    var canvas = document.getElementById('visitsChart');
+
+    if (canvas) {
+
+        var dates = @Html.Raw(Json.Serialize(ViewBag.Dates ?? new List<string>()));
+        var counts = @Html.Raw(Json.Serialize(ViewBag.Counts ?? new List<int>()));
+
+        var ctx = canvas.getContext('2d');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'الزيارات',
+                    data: counts,
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            }
+        });
+    }
+</script>
+
+<style>
+    .card {
+        background: linear-gradient(145deg,#240046,#3c096c);
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <h2 style="color:#c77dff;margin-bottom:30px;">📊 لوحة التحكم</h2>
+
+<div class="dashboard">
+
+    <div class="card users">
+        <h3>👨‍💻 المستخدمين</h3>
+        <span>@ViewBag.Users</span>
+    </div>
+
+    <div class="card softwares">
+        <h3>📦 البرامج</h3>
+        <span>@ViewBag.Softwares</span>
+    </div>
+
+    <div class="card downloads">
+        <h3>⬇️ التحميلات</h3>
+        <span>@ViewBag.Downloads</span>
+    </div>
+
+    <div class="card visits">
+        <h3>👀 الزيارات</h3>
+        <span>@ViewBag.Visits</span>
+    </div>
+</div>
+
+<style>
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+        gap: 25px;
+    }
+
+    /* الكروت */
+    .card {
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        transition: 0.4s;
+        backdrop-filter: blur(10px);
+        color: white;
+    }
+
+
+    /* الألوان */
+    .users {
+        background: linear-gradient(145deg,#240046,#3c096c);
+    }
+
+    .softwares {
+        background: linear-gradient(145deg,#3a0ca3,#7b2cbf);
+    }
+
+    .downloads {
+        background: linear-gradient(145deg,#5a189a,#9d4edd);
+    }
+
+    .visits {
+        background: linear-gradient(145deg,#10002b,#240046);
+    }
+
+    /* Hover */
+    .card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 0 25px #c77dff;
+    }
+
+    /* الأرقام */
+    .card span {
+        font-size: 40px;
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+        color: #fff;
+    }
+
+</style>
+@if (ViewBag.Dates != null && ViewBag.Counts != null)
+{
+    <canvas id="visitsChart"></canvas>
+}
+else
+{
+    <p>لا توجد بيانات بعد</p>
+}
+<canvas id="visitsChart" style="margin-top:40px;"></canvas>
+
+<script>
+    var canvas = document.getElementById('visitsChart');
+
+    if (canvas) {
+        var dates = @Html.Raw(Json.Serialize(ViewBag.Dates ?? new List<string>())),
+        var counts = @Html.Raw(Json.Serialize(ViewBag.Counts ?? new List<int>())),
+
+        var ctx = canvas.getContext('2d');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'الزيارات',
+                    data: counts,
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            }
+        });
+    }
+</script> *@
