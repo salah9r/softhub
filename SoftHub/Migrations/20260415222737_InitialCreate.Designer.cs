@@ -11,8 +11,8 @@ using SoftHub.Data;
 namespace SoftHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260415150905_InitSqlite")]
-    partial class InitSqlite
+    [Migration("20260415222737_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
