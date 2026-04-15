@@ -11,7 +11,7 @@ using SoftHub.Data;
 namespace SoftHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260415222737_InitialCreate")]
+    [Migration("20260415225647_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
