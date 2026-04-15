@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SoftHub.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // 🔗 ربط قاعدة البيانات
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()
-    ));
+    options.UseSqlite("Data Source=app.db"));
 
 // 🔐 Identity + Roles
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
