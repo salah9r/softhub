@@ -12,5 +12,8 @@ RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+
+RUN mkdir /app/keys
+
 COPY --from=build /app/SoftHub/out .
 ENTRYPOINT ["dotnet", "SoftHub.dll"]

@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SoftHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
 // Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
