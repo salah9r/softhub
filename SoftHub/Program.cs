@@ -1,18 +1,17 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SoftHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 الاتصال بقاعدة البيانات (SQLite)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                      ?? "Data Source=app.db";
+// Connection String
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// 🔹 إضافة Identity
+// Add Identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -20,49 +19,49 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// 🔹 إضافة MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
 
-// 🔥 أهم جزء (حل مشكلة AspNetRoles نهائيًا)
+// ✅ IMPORTANT: Auto migrate database on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
     try
     {
-        Console.WriteLine("🔥 Applying migrations...");
-
         var context = services.GetRequiredService<ApplicationDbContext>();
+
+        // Apply migrations automatically
         context.Database.Migrate();
 
-        Console.WriteLine("✅ Migrations applied!");
-
+        // Optional: create default roles
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        if (!await roleManager.RoleExistsAsync("Admin"))
+        string[] roles = { "Admin", "User" };
+
+        foreach (var role in roles)
         {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
-            Console.WriteLine("✅ Admin role created!");
+            if (!roleManager.RoleExistsAsync(role).Result)
+            {
+                roleManager.CreateAsync(new IdentityRole(role)).Wait();
+            }
         }
     }
     catch (Exception ex)
     {
-        Console.WriteLine("❌ Migration ERROR: " + ex.Message);
+        Console.WriteLine("Migration error: " + ex.Message);
     }
 }
 
 
-// 🔹 إعدادات التطبيق
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -70,7 +69,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔹 المسارات
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -78,7 +76,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
-
 
 
 
